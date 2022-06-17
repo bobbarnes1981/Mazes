@@ -50,7 +50,7 @@ namespace Mazes
                 switch (state)
                 {
                     case states.start:
-                        t = new Thread(() => _generationAlgorithm.Generate(-1));
+                        t = new Thread(() => _generationAlgorithm.Generate());
                         t.Start();
                         Thread.Sleep(1000);
                         state = states.gen;
@@ -59,7 +59,7 @@ namespace Mazes
                     case states.gen:
                         if (_generationAlgorithm.IsRunning == false)
                         {
-                            t = new Thread(() => _solverAlgorithm.Solve(_generationAlgorithm.Map, 50));
+                            t = new Thread(() => _solverAlgorithm.Solve(_generationAlgorithm.Map));
                             t.Start();
                             Thread.Sleep(1000);
                             state = states.solve;
@@ -95,7 +95,6 @@ namespace Mazes
 
             _generationAlgorithm.Stop();
             _solverAlgorithm.Stop();
-
         }
 
         private void clearScreen()

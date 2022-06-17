@@ -11,7 +11,7 @@ namespace MazeGenerator
 
         public Map Map { get; }
 
-        public void Generate(int sleep);
+        public void Generate();
 
         public void Stop();
 

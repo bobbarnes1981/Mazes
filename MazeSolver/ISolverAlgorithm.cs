@@ -13,7 +13,7 @@ namespace MazeSolver
 
         public List<Coordinates> Locations { get; }
 
-        public void Solve(Map map, int sleep);
+        public void Solve(Map map);
 
         public void Stop();
     }

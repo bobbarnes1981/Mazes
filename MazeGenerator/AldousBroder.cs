@@ -5,6 +5,7 @@ namespace MazeGenerator
     public class AldousBroder : IGenerationAlgorithm
     {
         private bool[] _visited;
+        private int _sleep;
 
         public bool IsRunning { get; private set; }
         public int CurrentX { get; private set; }
@@ -12,11 +13,12 @@ namespace MazeGenerator
 
         public Map Map { get; private set;}
 
-        public AldousBroder(int width, int height)
+        public AldousBroder(int width, int height, int sleep)
         {
             Map = new Map(width, height);
             IsRunning = false;
             _visited = new bool[width * height];
+            _sleep = sleep;
         }
 
         private int getIndex(int x, int y)
@@ -29,7 +31,7 @@ namespace MazeGenerator
             return _visited[getIndex(x, y)];
         }
 
-        public void Generate(int sleep)
+        public void Generate()
         {
             IsRunning = true;
 
@@ -83,9 +85,9 @@ namespace MazeGenerator
                     CurrentX = _x;
                     CurrentY = _y;
 
-                    if (sleep > 0)
+                    if (_sleep > 0)
                     {
-                        Thread.Sleep(sleep);
+                        Thread.Sleep(_sleep);
                     }
                 }
             }

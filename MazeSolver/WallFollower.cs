@@ -4,6 +4,8 @@ namespace MazeSolver
 {
     public class WallFollower : ISolverAlgorithm
     {
+        private int _sleep;
+
         public bool IsRunning { get; private set; }
 
         public int CurrentX { get; private set; }
@@ -14,12 +16,13 @@ namespace MazeSolver
 
         public List<Coordinates> Locations { get; private set; }
 
-        public WallFollower()
+        public WallFollower(int sleep)
         {
+            _sleep = sleep;
             Locations = new List<Coordinates>();
         }
 
-        public void Solve(Map map, int sleep)
+        public void Solve(Map map)
         {
             Map = map;
 
@@ -43,14 +46,12 @@ namespace MazeSolver
             {
                 var x = 0;
                 var y = 0;
-                Console.WriteLine($"facing: {facing}");
                 while (x == 0 && y == 0)
                 {
                     switch (facing)
                     {
                         case CompassPoint.North:
                             checking = CompassPoint.West;
-                            Console.WriteLine($"checking: {checking}");
                             if (map[CurrentX, CurrentY].Walls[checking])
                             {
                                 facing = CompassPoint.East;
@@ -63,7 +64,6 @@ namespace MazeSolver
                             break;
                         case CompassPoint.East:
                             checking = CompassPoint.North;
-                            Console.WriteLine($"checking: {checking}");
                             if (map[CurrentX, CurrentY].Walls[checking])
                             {
                                 facing = CompassPoint.South;
@@ -76,7 +76,6 @@ namespace MazeSolver
                             break;
                         case CompassPoint.South:
                             checking = CompassPoint.East;
-                            Console.WriteLine($"checking: {checking}");
                             if (map[CurrentX, CurrentY].Walls[checking])
                             {
                                 facing = CompassPoint.West;
@@ -89,7 +88,6 @@ namespace MazeSolver
                             break;
                         case CompassPoint.West:
                             checking = CompassPoint.South;
-                            Console.WriteLine($"checking: {checking}");
                             if (map[CurrentX, CurrentY].Walls[checking])
                             {
                                 facing = CompassPoint.North;
@@ -101,17 +99,14 @@ namespace MazeSolver
                             }
                             break;
                     }
-                    Console.WriteLine($"turning to face: {facing}");
                 }
-                Console.WriteLine($"moving: {x},{y}");
                 CurrentX += x;
                 CurrentY += y;
                 Locations.Add(new Coordinates(CurrentX, CurrentY));
-                Console.WriteLine($"Steps: {Locations.Count()}");
 
-                if (sleep > 0)
+                if (_sleep > 0)
                 {
-                    Thread.Sleep(sleep);
+                    Thread.Sleep(_sleep);
                 }
             }
 
