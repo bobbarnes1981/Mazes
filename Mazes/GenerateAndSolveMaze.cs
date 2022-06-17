@@ -184,18 +184,12 @@ namespace Mazes
                 }
             }
             var max = _solverAlgorithm.Locations.Count();
-            for (int i = 0; i < max && i < 255; i++)
+            for (int i = 0; i < max; i++)
             {
-                var border = 3;
-                SDL.SDL_SetRenderDrawColor(_renderer, (byte)((255/max) * i), 0, 0, 255);
-                var rect = new SDL.SDL_Rect
-                {
-                    x = (_solverAlgorithm.Locations[i].X * scalex) + border,
-                    y = (_solverAlgorithm.Locations[i].Y * scaley) + border,
-                    w = scalex - (border  *2) - 1,
-                    h = scaley - (border * 2) - 1
-                };
-                SDL.SDL_RenderFillRect(_renderer, ref rect);
+                byte r = (byte)((255.0 / max) * i);
+                byte g = 0x00;
+                byte b = 0x00;
+                fillInnerRect(_solverAlgorithm.Locations[i].X, _solverAlgorithm.Locations[i].Y, scalex, scaley, r, g, b);
             }
         }
 
@@ -224,6 +218,20 @@ namespace Mazes
                 h = scaley - 1
             };
             SDL.SDL_RenderDrawRect(_renderer, ref rect);
+        }
+
+        private void fillInnerRect(int x, int y, int scalex, int scaley, byte r, byte g, byte b)
+        {
+            var border = 3;
+            SDL.SDL_SetRenderDrawColor(_renderer, r, g, b, 255);
+            var rect = new SDL.SDL_Rect
+            {
+                x = (x * scalex) + border,
+                y = (y * scaley) + border,
+                w = scalex - (border * 2) - 1,
+                h = scaley - (border * 2) - 1
+            };
+            SDL.SDL_RenderFillRect(_renderer, ref rect);
         }
 
         private void drawWalls(int x, int y, int scalex, int scaley, Cell c)

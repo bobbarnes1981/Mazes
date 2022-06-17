@@ -3,8 +3,8 @@ using MazeGenerator;
 using Mazes;
 using MazeSolver;
 
-var mazeWidth = 10;
-var mazeHeight = 10;
+var mazeWidth = 20;
+var mazeHeight = 20;
 var videoWidth = 500;
 var videoHeight = 500;
 
