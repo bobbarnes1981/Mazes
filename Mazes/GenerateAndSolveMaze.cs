@@ -155,56 +155,15 @@ namespace Mazes
                     var c = _generationAlgorithm.Map[x, y];
                     if (x == _generationAlgorithm.CurrentX && y == _generationAlgorithm.CurrentY)
                     {
-                        var border = 3;
-                        var left = (x * scalex) - border;
-                        var top = (y * scaley) - border;
-                        SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
-                        var rect = new SDL.SDL_Rect
-                        {
-                            x = left,
-                            y = top,
-                            w = scalex + (border * 2) - 1,
-                            h = scaley + (border * 2) - 1
-                        };
-                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
+                        drawSelectRect(x, y, scalex, scaley);
                     }
                     if (_generationAlgorithm.Visited(x, y))
                     {
-                        var left = x * scalex;
-                        var top = y * scaley;
-                        var right = (x * scalex) + scalex - 1;
-                        var bot = (y * scaley) + scaley - 1;
-                        SDL.SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-                        if (c.Walls[CompassPoint.North])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
-                        }
-                        if (c.Walls[CompassPoint.East])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
-                        }
-                        if (c.Walls[CompassPoint.South])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
-                        }
-                        if (c.Walls[CompassPoint.West])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
-                        }
+                        drawWalls(x, y, scalex, scaley, c);
                     }
                     else
                     {
-                        var left = x * scalex;
-                        var top = y * scaley;
-                        SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
-                        var rect = new SDL.SDL_Rect
-                        {
-                            x = left,
-                            y = top,
-                            w = scalex  - 1,
-                            h = scaley  - 1
-                        };
-                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
+                        drawInnerRect(x, y, scalex, scaley);
                     }
                 }
             }
@@ -219,60 +178,76 @@ namespace Mazes
                     var c = _solverAlgorithm.Map[x, y];
                     if (x == _solverAlgorithm.CurrentX && y == _solverAlgorithm.CurrentY)
                     {
-                        var border = 3;
-                        var left = (x * scalex) - border;
-                        var top = (y * scaley) - border;
-                        SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
-                        var rect = new SDL.SDL_Rect
-                        {
-                            x = left,
-                            y = top,
-                            w = scalex + (border * 2) - 1,
-                            h = scaley + (border * 2) - 1
-                        };
-                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
+                        drawSelectRect(x, y, scalex, scaley);
                     }
-                    if (true)
-                    {
-                        var left = x * scalex;
-                        var top = y * scaley;
-                        var right = (x * scalex) + scalex - 1;
-                        var bot = (y * scaley) + scaley - 1;
-                        SDL.SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-                        if (c.Walls[CompassPoint.North])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
-                        }
-                        if (c.Walls[CompassPoint.East])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
-                        }
-                        if (c.Walls[CompassPoint.South])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
-                        }
-                        if (c.Walls[CompassPoint.West])
-                        {
-                            SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
-                        }
-                    }
+                    drawWalls(x, y, scalex, scaley, c);
                 }
             }
             var max = _solverAlgorithm.Locations.Count();
             for (int i = 0; i < max && i < 255; i++)
             {
                 var border = 3;
-                var left = (_solverAlgorithm.Locations[i].X * scalex) + border;
-                var top = (_solverAlgorithm.Locations[i].Y * scaley) + border;
                 SDL.SDL_SetRenderDrawColor(_renderer, (byte)((255/max) * i), 0, 0, 255);
                 var rect = new SDL.SDL_Rect
                 {
-                    x = left,
-                    y = top,
+                    x = (_solverAlgorithm.Locations[i].X * scalex) + border,
+                    y = (_solverAlgorithm.Locations[i].Y * scaley) + border,
                     w = scalex - (border  *2) - 1,
                     h = scaley - (border * 2) - 1
                 };
                 SDL.SDL_RenderFillRect(_renderer, ref rect);
+            }
+        }
+
+        private void drawSelectRect(int x, int y, int scalex, int scaley)
+        {
+            var border = 3;
+            SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
+            var rect = new SDL.SDL_Rect
+            {
+                x = (x * scalex) - border,
+                y = (y * scaley) - border,
+                w = scalex + (border * 2) - 1,
+                h = scaley + (border * 2) - 1
+            };
+            SDL.SDL_RenderDrawRect(_renderer, ref rect);
+        }
+
+        private void drawInnerRect(int x, int y, int scalex, int scaley)
+        {
+            SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+            var rect = new SDL.SDL_Rect
+            {
+                x = x * scalex,
+                y = y * scaley,
+                w = scalex - 1,
+                h = scaley - 1
+            };
+            SDL.SDL_RenderDrawRect(_renderer, ref rect);
+        }
+
+        private void drawWalls(int x, int y, int scalex, int scaley, Cell c)
+        {
+            var left = x * scalex;
+            var top = y * scaley;
+            var right = (x * scalex) + scalex - 1;
+            var bot = (y * scaley) + scaley - 1;
+            SDL.SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
+            if (c.Walls[CompassPoint.North])
+            {
+                SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
+            }
+            if (c.Walls[CompassPoint.East])
+            {
+                SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
+            }
+            if (c.Walls[CompassPoint.South])
+            {
+                SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
+            }
+            if (c.Walls[CompassPoint.West])
+            {
+                SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
             }
         }
     }
