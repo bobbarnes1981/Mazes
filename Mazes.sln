@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mazes", "Mazes\Mazes.csproj", "{695B419D-32E9-4044-A378-1C8955F0D1B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGenerator", "MazeGenerator\MazeGenerator.csproj", "{8C43F0CD-2BD2-46CA-A983-89982841CDC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeSolver", "MazeSolver\MazeSolver.csproj", "{34D15E9B-2399-4A89-AD36-E9D583DEF5BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeLibrary", "MazeLibrary\MazeLibrary.csproj", "{511F2946-AF76-4D08-B8DD-64DB0C172105}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{695B419D-32E9-4044-A378-1C8955F0D1B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{695B419D-32E9-4044-A378-1C8955F0D1B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{695B419D-32E9-4044-A378-1C8955F0D1B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{695B419D-32E9-4044-A378-1C8955F0D1B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C43F0CD-2BD2-46CA-A983-89982841CDC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C43F0CD-2BD2-46CA-A983-89982841CDC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C43F0CD-2BD2-46CA-A983-89982841CDC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C43F0CD-2BD2-46CA-A983-89982841CDC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34D15E9B-2399-4A89-AD36-E9D583DEF5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34D15E9B-2399-4A89-AD36-E9D583DEF5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34D15E9B-2399-4A89-AD36-E9D583DEF5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34D15E9B-2399-4A89-AD36-E9D583DEF5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{511F2946-AF76-4D08-B8DD-64DB0C172105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{511F2946-AF76-4D08-B8DD-64DB0C172105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{511F2946-AF76-4D08-B8DD-64DB0C172105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{511F2946-AF76-4D08-B8DD-64DB0C172105}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54F81BB2-154E-4818-99CC-189A4CFEA79B}
+	EndGlobalSection
+EndGlobal
