@@ -158,13 +158,15 @@ namespace Mazes
                         var border = 3;
                         var left = (x * scalex) - border;
                         var top = (y * scaley) - border;
-                        var right = ((x * scalex) + scalex) - 1 + border;
-                        var bot = ((y * scaley) + scaley) - 1 + border;
                         SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
-                        SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
-                        SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
+                        var rect = new SDL.SDL_Rect
+                        {
+                            x = left,
+                            y = top,
+                            w = scalex + (border * 2) - 1,
+                            h = scaley + (border * 2) - 1
+                        };
+                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
                     }
                     if (_generationAlgorithm.Visited(x, y))
                     {
@@ -194,13 +196,15 @@ namespace Mazes
                     {
                         var left = x * scalex;
                         var top = y * scaley;
-                        var right = (x * scalex) + scalex - 1;
-                        var bot = (y * scaley) + scaley - 1;
                         SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
-                        SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
-                        SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
+                        var rect = new SDL.SDL_Rect
+                        {
+                            x = left,
+                            y = top,
+                            w = scalex  - 1,
+                            h = scaley  - 1
+                        };
+                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
                     }
                 }
             }
@@ -218,13 +222,15 @@ namespace Mazes
                         var border = 3;
                         var left = (x * scalex) - border;
                         var top = (y * scaley) - border;
-                        var right = ((x * scalex) + scalex) - 1 + border;
-                        var bot = ((y * scaley) + scaley) - 1 + border;
                         SDL.SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
-                        SDL.SDL_RenderDrawLine(_renderer, left, top, right, top);
-                        SDL.SDL_RenderDrawLine(_renderer, right, top, right, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, right, bot, left, bot);
-                        SDL.SDL_RenderDrawLine(_renderer, left, bot, left, top);
+                        var rect = new SDL.SDL_Rect
+                        {
+                            x = left,
+                            y = top,
+                            w = scalex + (border * 2) - 1,
+                            h = scaley + (border * 2) - 1
+                        };
+                        SDL.SDL_RenderDrawRect(_renderer, ref rect);
                     }
                     if (true)
                     {
@@ -258,14 +264,12 @@ namespace Mazes
                 var border = 3;
                 var left = (_solverAlgorithm.Locations[i].X * scalex) + border;
                 var top = (_solverAlgorithm.Locations[i].Y * scaley) + border;
-                var right = ((_solverAlgorithm.Locations[i].X * scalex) + scalex) - 1 - border;
-                var bot = ((_solverAlgorithm.Locations[i].Y * scaley) + scaley) - 1 - border;
-                SDL.SDL_SetRenderDrawColor(_renderer, (byte)(((255/max) * i)), 0, 0, 255);
+                SDL.SDL_SetRenderDrawColor(_renderer, (byte)((255/max) * i), 0, 0, 255);
                 var rect = new SDL.SDL_Rect
                 {
                     x = left,
                     y = top,
-                    w = scalex - (border  *2) -1,
+                    w = scalex - (border  *2) - 1,
                     h = scaley - (border * 2) - 1
                 };
                 SDL.SDL_RenderFillRect(_renderer, ref rect);
