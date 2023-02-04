@@ -45,6 +45,7 @@ namespace MazeSolver
                 var y = 0;
                 while (x == 0 && y == 0)
                 {
+                    // Check for path left, if no path, turn 90 degrees right, otherwise go left
                     switch (facing)
                     {
                         case CompassPoint.North:
