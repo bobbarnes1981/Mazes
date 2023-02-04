@@ -13,6 +13,7 @@ variables:
   solution: 'Mazes.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  artifactTarget: 'Mazes\bin\$(buildConfiguration)\net6.0'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -31,3 +32,9 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(artifactTarget)'
+    artifact: 'Mazes'
+    publishLocation: 'pipeline'
