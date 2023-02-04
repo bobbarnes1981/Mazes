@@ -36,7 +36,7 @@ namespace MazeSolver
             CurrentY = startY;
 
             var facing = CompassPoint.North;
-            var checking = CompassPoint.West;
+            CompassPoint checking;
 
             Locations.Add(new Coordinates(CurrentX, CurrentY));
             while ((CurrentX != endX || CurrentY != endY) && IsRunning)
