@@ -1,16 +1,23 @@
-﻿
+﻿using Autofac;
 using MazeGenerator;
+using MazeLibrary;
 using Mazes;
 using MazeSolver;
+using Microsoft.Extensions.Configuration;
+using Random = MazeLibrary.Random;
 
-var mazeWidth = 30;
-var mazeHeight = 30;
-var videoWidth = 600;
-var videoHeight = 600;
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("config.json")
+    .Build()
+    .Get<MazeConfiguration>();
 
-var generationAlgorithm = new AldousBroder(new MazeLibrary.Random(), mazeWidth, mazeHeight);
-var solverAlgorithmFactory = new WallFollowerFactory();
+var builder = new ContainerBuilder();
+builder.RegisterType<Random>().As<IRandom>();
+builder.RegisterInstance(configuration).As<MazeConfiguration>();
+builder.RegisterType<AldousBroder>().As<IGenerationAlgorithm>();
+builder.RegisterType<WallFollowerFactory>().As<ISolverAlgorithmFactory>();
+builder.RegisterType<GenerateAndSolveMaze>().As<GenerateAndSolveMaze>();
+var container = builder.Build();
 
-var gen = new GenerateAndSolveMaze(generationAlgorithm, solverAlgorithmFactory);
-
-gen.Go(videoWidth, videoHeight);
+var render = container.Resolve<GenerateAndSolveMaze>();
+render.Go();

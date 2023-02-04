@@ -8,6 +8,8 @@ namespace Mazes
         private IntPtr _renderer;
         private IntPtr _window;
         private bool _running;
+        private int _width;
+        private int _height;
 
         private IGenerationAlgorithm _generationAlgorithm;
 
@@ -16,11 +18,13 @@ namespace Mazes
 
         private List<Coordinates> _solverHistory;
 
-        public GenerateAndSolveMaze(IGenerationAlgorithm generationAlgorithm, ISolverAlgorithmFactory solverAlgorithmFactory)
+        public GenerateAndSolveMaze(IGenerationAlgorithm generationAlgorithm, ISolverAlgorithmFactory solverAlgorithmFactory, MazeConfiguration configuration)
         {
             _generationAlgorithm = generationAlgorithm;
             _solverAlgorithmFactory = solverAlgorithmFactory;
             _solverHistory = new List<Coordinates>();
+            _width = configuration.VideoWidth;
+            _height = configuration.VideoHeight;
         }
 
         enum states
@@ -31,12 +35,12 @@ namespace Mazes
             done
         }
 
-        public void Go(int videoWidth, int videoHeight)
+        public void Go()
         {
-            initVideo(videoWidth, videoHeight);
+            initVideo(_width, _height);
 
-            var scalex = videoWidth / _generationAlgorithm.Map.Width;
-            var scaley = videoHeight / _generationAlgorithm.Map.Height;
+            var scalex = _width / _generationAlgorithm.Map.Width;
+            var scaley = _height / _generationAlgorithm.Map.Height;
             
             var state = states.start;
 

@@ -20,12 +20,12 @@ namespace MazeGenerator
 
         public Grid<Cell> Map { get; private set;}
 
-        public AldousBroder(IRandom random, int width, int height)
+        public AldousBroder(IRandom random, MazeConfiguration configuration)
         {
-            Map = new Grid<Cell>(width, height);
+            Map = new Grid<Cell>(configuration.MazeWidth, configuration.MazeHeight);
 
             _random = random;
-            _visited = new Grid<bool>(width, height);
+            _visited = new Grid<bool>(configuration.MazeWidth, configuration.MazeHeight);
 
             // pick the random starting cell
             CurrentCoordinates = new Coordinates(_random.Next(0, Map.Width), _random.Next(0, Map.Height));
