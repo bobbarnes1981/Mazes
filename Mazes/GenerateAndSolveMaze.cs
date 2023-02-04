@@ -10,12 +10,17 @@ namespace Mazes
         private bool _running;
 
         private IGenerationAlgorithm _generationAlgorithm;
-        private ISolverAlgorithm _solverAlgorithm;
 
-        public GenerateAndSolveMaze(IGenerationAlgorithm generationAlgorithm, ISolverAlgorithm solverAlgorithm)
+        private ISolverAlgorithm _solverAlgorithm;
+        private ISolverAlgorithmFactory _solverAlgorithmFactory;
+
+        private List<Coordinates> _solverHistory;
+
+        public GenerateAndSolveMaze(IGenerationAlgorithm generationAlgorithm, ISolverAlgorithmFactory solverAlgorithmFactory)
         {
             _generationAlgorithm = generationAlgorithm;
-            _solverAlgorithm = solverAlgorithm;
+            _solverAlgorithmFactory = solverAlgorithmFactory;
+            _solverHistory = new List<Coordinates>();
         }
 
         enum states
@@ -37,8 +42,6 @@ namespace Mazes
 
             _running = true;
 
-            Thread t;
-
             while (_running)
             {
                 checkEvents();
@@ -48,33 +51,43 @@ namespace Mazes
                 switch (state)
                 {
                     case states.start:
-                        t = new Thread(() => _generationAlgorithm.Generate());
-                        t.Start();
                         Thread.Sleep(1000);
                         state = states.gen;
                         break;
 
                     case states.gen:
-                        if (_generationAlgorithm.IsRunning == false)
+                        if (_generationAlgorithm.Complete == true)
                         {
-                            t = new Thread(() => _solverAlgorithm.Solve(_generationAlgorithm.Map));
-                            t.Start();
                             Thread.Sleep(1000);
                             state = states.solve;
+                            _solverAlgorithm = _solverAlgorithmFactory.Create(_generationAlgorithm.Map);
+                            _solverHistory.Add(_solverAlgorithm.CurrentCoordinates);
                         }
                         else
                         {
+                            // TODO: calculate steps to take
+                            for (int i = 0; i < 100; i++)
+                            {
+                                _generationAlgorithm.Step();
+                            }
                             renderGenerator(scalex, scaley);
                         }
                         break;
 
                     case states.solve:
-                        if (_solverAlgorithm.IsRunning == false)
+                        if (_solverAlgorithm.Complete == true)
                         {
+                            Thread.Sleep(1000);
                             state = states.done;
                         }
                         else
                         {
+                            // TODO: calculate steps to take
+                            for (int i = 0; i < 1; i++)
+                            {
+                                _solverAlgorithm.Step();
+                                _solverHistory.Add(_solverAlgorithm.CurrentCoordinates);
+                            }
                             renderSolver(scalex, scaley);
                         }
                         break;
@@ -90,9 +103,6 @@ namespace Mazes
             SDL.SDL_DestroyRenderer(_renderer);
             SDL.SDL_DestroyWindow(_window);
             SDL.SDL_Quit();
-
-            _generationAlgorithm.Stop();
-            _solverAlgorithm.Stop();
         }
 
         private void clearScreen()
@@ -150,18 +160,11 @@ namespace Mazes
                 for (int y = 0; y < _generationAlgorithm.Map.Height; y++)
                 {
                     var c = _generationAlgorithm.Map[x, y];
-                    if (x == _generationAlgorithm.CurrentX && y == _generationAlgorithm.CurrentY)
+                    if (x == _generationAlgorithm.CurrentCoordinates.X && y == _generationAlgorithm.CurrentCoordinates.Y)
                     {
                         drawSelectRect(x, y, scalex, scaley);
                     }
-                    if (_generationAlgorithm.Visited(x, y))
-                    {
-                        drawWalls(x, y, scalex, scaley, c);
-                    }
-                    else
-                    {
-                        drawInnerRect(x, y, scalex, scaley);
-                    }
+                    drawWalls(x, y, scalex, scaley, c);
                 }
             }
         }
@@ -173,20 +176,22 @@ namespace Mazes
                 for (int y = 0; y < _solverAlgorithm.Map.Height; y++)
                 {
                     var c = _solverAlgorithm.Map[x, y];
-                    if (x == _solverAlgorithm.CurrentX && y == _solverAlgorithm.CurrentY)
+                    if (x == _solverAlgorithm.CurrentCoordinates.X && y == _solverAlgorithm.CurrentCoordinates.Y)
                     {
                         drawSelectRect(x, y, scalex, scaley);
                     }
                     drawWalls(x, y, scalex, scaley, c);
                 }
             }
-            var max = _solverAlgorithm.Locations.Count();
+
+            // probably won't work for different algorithms
+            var max = _solverHistory.Count();
             for (int i = 0; i < max; i++)
             {
                 byte r = (byte)((255.0 / max) * i);
                 byte g = 0x00;
                 byte b = 0x00;
-                fillInnerRect(_solverAlgorithm.Locations[i].X, _solverAlgorithm.Locations[i].Y, scalex, scaley, r, g, b);
+                fillInnerRect(_solverHistory[i].X, _solverHistory[i].Y, scalex, scaley, r, g, b);
             }
         }
 

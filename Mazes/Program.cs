@@ -9,8 +9,8 @@ var videoWidth = 600;
 var videoHeight = 600;
 
 var generationAlgorithm = new AldousBroder(new MazeLibrary.Random(), mazeWidth, mazeHeight);
-var solverAlgorithm = new WallFollower();
+var solverAlgorithmFactory = new WallFollowerFactory();
 
-var gen = new GenerateAndSolveMaze(generationAlgorithm, solverAlgorithm);
+var gen = new GenerateAndSolveMaze(generationAlgorithm, solverAlgorithmFactory);
 
 gen.Go(videoWidth, videoHeight);

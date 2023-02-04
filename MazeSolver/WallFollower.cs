@@ -4,111 +4,93 @@ namespace MazeSolver
 {
     public class WallFollower : ISolverAlgorithm
     {
-        public bool IsRunning { get; private set; }
+        private Coordinates _endCoordinates;
+        private CompassPoint _facing;
 
-        public int CurrentX { get; private set; }
+        public Coordinates CurrentCoordinates { get; private set; }
 
-        public int CurrentY { get; private set; }
-
-        public Map Map { get; private set; }
-
-        public List<Coordinates> Locations { get; private set; }
-
-        public WallFollower()
+        public bool Complete
         {
-            Locations = new List<Coordinates>();
+            get
+            {
+                return CurrentCoordinates.X == _endCoordinates.X && CurrentCoordinates.Y == _endCoordinates.Y;
+            }
         }
 
-        public void Solve(Map map)
+        public Grid<Cell> Map { get; private set; }
+
+        public WallFollower(Grid<Cell> map)
         {
             Map = map;
 
-            Locations.Clear();
-
-            IsRunning = true;
-
-            var startX = 0;
-            var startY = 0;
-            var endX = map.Width - 1;
-            var endY = map.Height - 1;
-
-            CurrentX = startX;
-            CurrentY = startY;
-
-            var facing = CompassPoint.North;
-            CompassPoint checking;
-
-            Locations.Add(new Coordinates(CurrentX, CurrentY));
-            while ((CurrentX != endX || CurrentY != endY) && IsRunning)
-            {
-                var x = 0;
-                var y = 0;
-                while (x == 0 && y == 0)
-                {
-                    // Check for path left, if no path, turn 90 degrees right, otherwise go left
-                    switch (facing)
-                    {
-                        case CompassPoint.North:
-                            checking = CompassPoint.West;
-                            if (map[CurrentX, CurrentY].Walls[checking])
-                            {
-                                facing = CompassPoint.East;
-                            }
-                            else
-                            {
-                                facing = checking;
-                                x = -1;
-                            }
-                            break;
-                        case CompassPoint.East:
-                            checking = CompassPoint.North;
-                            if (map[CurrentX, CurrentY].Walls[checking])
-                            {
-                                facing = CompassPoint.South;
-                            }
-                            else
-                            {
-                                facing = checking;
-                                y = -1;
-                            }
-                            break;
-                        case CompassPoint.South:
-                            checking = CompassPoint.East;
-                            if (map[CurrentX, CurrentY].Walls[checking])
-                            {
-                                facing = CompassPoint.West;
-                            }
-                            else
-                            {
-                                facing = checking;
-                                x = +1;
-                            }
-                            break;
-                        case CompassPoint.West:
-                            checking = CompassPoint.South;
-                            if (map[CurrentX, CurrentY].Walls[checking])
-                            {
-                                facing = CompassPoint.North;
-                            }
-                            else
-                            {
-                                facing = checking;
-                                y = +1;
-                            }
-                            break;
-                    }
-                }
-                CurrentX += x;
-                CurrentY += y;
-                Locations.Add(new Coordinates(CurrentX, CurrentY));
-            }
-
-            IsRunning = false;
+            _facing = CompassPoint.North;
+            CurrentCoordinates = new Coordinates(0, 0);
+            _endCoordinates = new Coordinates(map.Width - 1, map.Height - 1);
         }
 
-        public void Stop()
+        public void Step()
         {
-            IsRunning = false;
+            CompassPoint checking;
+
+            var x = 0;
+            var y = 0;
+            while (x == 0 && y == 0)
+            {
+                // Check for path left, if no path, turn 90 degrees right, otherwise go left
+                switch (_facing)
+                {
+                    case CompassPoint.North:
+                        checking = CompassPoint.West;
+                        if (Map[CurrentCoordinates.X, CurrentCoordinates.Y].Walls[checking])
+                        {
+                            _facing = CompassPoint.East;
+                        }
+                        else
+                        {
+                            _facing = checking;
+                            x = -1;
+                        }
+                        break;
+                    case CompassPoint.East:
+                        checking = CompassPoint.North;
+                        if (Map[CurrentCoordinates.X, CurrentCoordinates.Y].Walls[checking])
+                        {
+                            _facing = CompassPoint.South;
+                        }
+                        else
+                        {
+                            _facing = checking;
+                            y = -1;
+                        }
+                        break;
+                    case CompassPoint.South:
+                        checking = CompassPoint.East;
+                        if (Map[CurrentCoordinates.X, CurrentCoordinates.Y].Walls[checking])
+                        {
+                            _facing = CompassPoint.West;
+                        }
+                        else
+                        {
+                            _facing = checking;
+                            x = +1;
+                        }
+                        break;
+                    case CompassPoint.West:
+                        checking = CompassPoint.South;
+                        if (Map[CurrentCoordinates.X, CurrentCoordinates.Y].Walls[checking])
+                        {
+                            _facing = CompassPoint.North;
+                        }
+                        else
+                        {
+                            _facing = checking;
+                            y = +1;
+                        }
+                        break;
+                }
+            }
+
+            CurrentCoordinates = new Coordinates(CurrentCoordinates.X + x, CurrentCoordinates.Y + y);
         }
     }
 }

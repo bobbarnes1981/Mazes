@@ -2,17 +2,12 @@
 {
     public interface ISolverAlgorithm
     {
-        public bool IsRunning { get; }
+        public Coordinates CurrentCoordinates { get; }
 
-        public int CurrentX { get; }
-        public int CurrentY { get; }
+        public bool Complete { get; }
 
-        public Map Map { get; }
+        public Grid<Cell> Map { get; }
 
-        public List<Coordinates> Locations { get; }
-
-        public void Solve(Map map);
-
-        public void Stop();
+        public void Step();
     }
 }
