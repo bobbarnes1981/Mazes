@@ -5,7 +5,6 @@ namespace MazeGenerator
     public class AldousBroder : IGenerationAlgorithm
     {
         private bool[] _visited;
-        private int _sleep;
 
         public bool IsRunning { get; private set; }
         public int CurrentX { get; private set; }
@@ -13,12 +12,11 @@ namespace MazeGenerator
 
         public Map Map { get; private set;}
 
-        public AldousBroder(int width, int height, int sleep)
+        public AldousBroder(int width, int height)
         {
             Map = new Map(width, height);
             IsRunning = false;
             _visited = new bool[width * height];
-            _sleep = sleep;
         }
 
         private int getIndex(int x, int y)
@@ -84,11 +82,6 @@ namespace MazeGenerator
                     // Make the chosen neighbour the current cell.
                     CurrentX = _x;
                     CurrentY = _y;
-
-                    if (_sleep > 0)
-                    {
-                        Thread.Sleep(_sleep);
-                    }
                 }
             }
 

@@ -4,8 +4,6 @@ namespace MazeSolver
 {
     public class WallFollower : ISolverAlgorithm
     {
-        private int _sleep;
-
         public bool IsRunning { get; private set; }
 
         public int CurrentX { get; private set; }
@@ -16,9 +14,8 @@ namespace MazeSolver
 
         public List<Coordinates> Locations { get; private set; }
 
-        public WallFollower(int sleep)
+        public WallFollower()
         {
-            _sleep = sleep;
             Locations = new List<Coordinates>();
         }
 
@@ -103,11 +100,6 @@ namespace MazeSolver
                 CurrentX += x;
                 CurrentY += y;
                 Locations.Add(new Coordinates(CurrentX, CurrentY));
-
-                if (_sleep > 0)
-                {
-                    Thread.Sleep(_sleep);
-                }
             }
 
             IsRunning = false;
