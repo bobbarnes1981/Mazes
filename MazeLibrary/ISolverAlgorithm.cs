@@ -1,6 +1,4 @@
-﻿using MazeLibrary;
-
-namespace MazeSolver
+﻿namespace MazeLibrary
 {
     public interface ISolverAlgorithm
     {

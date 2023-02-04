@@ -1,6 +1,4 @@
-﻿using MazeLibrary;
-
-namespace MazeGenerator
+﻿namespace MazeLibrary
 {
     public interface IGenerationAlgorithm
     {

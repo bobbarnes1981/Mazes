@@ -4,6 +4,8 @@ namespace MazeGenerator
 {
     public class AldousBroder : IGenerationAlgorithm
     {
+        private IRandom _random;
+
         private bool[] _visited;
 
         public bool IsRunning { get; private set; }
@@ -12,8 +14,9 @@ namespace MazeGenerator
 
         public Map Map { get; private set;}
 
-        public AldousBroder(int width, int height)
+        public AldousBroder(IRandom random, int width, int height)
         {
+            _random = random;
             Map = new Map(width, height);
             IsRunning = false;
             _visited = new bool[width * height];
@@ -34,10 +37,8 @@ namespace MazeGenerator
             IsRunning = true;
 
             // Pick a random cell as the current cell and mark it as visited.
-            var r = new Random();
-
-            CurrentX = r.Next(0, Map.Width);
-            CurrentY = r.Next(0, Map.Height);
+            CurrentX = _random.Next(0, Map.Width);
+            CurrentY = _random.Next(0, Map.Height);
 
             // While there are unvisited cells:
             while (_visited.Any(v => v == false) && IsRunning)
@@ -45,7 +46,7 @@ namespace MazeGenerator
                 // Pick a random neighbour
                 var _x = CurrentX;
                 var _y = CurrentY;
-                var point = r.Next(0, 4);
+                var point = _random.Next(0, 4);
                 var n = (CompassPoint)point;
                 var _n = CompassPoint.North;
 

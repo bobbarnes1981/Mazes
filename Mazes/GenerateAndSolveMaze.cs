@@ -1,6 +1,4 @@
-﻿using MazeGenerator;
-using MazeLibrary;
-using MazeSolver;
+﻿using MazeLibrary;
 using SDL2;
 
 namespace Mazes
