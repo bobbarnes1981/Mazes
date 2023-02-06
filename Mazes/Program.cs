@@ -14,7 +14,7 @@ new ConfigurationBuilder()
 var builder = new ContainerBuilder();
 builder.RegisterType<Random>().As<IRandom>();
 builder.RegisterInstance(configuration).As<MazeConfiguration>();
-builder.RegisterType<AldousBroder>().As<IGenerationAlgorithm>();
+builder.RegisterType<RandomisedDepthFirstSearch>().As<IGenerationAlgorithm>();
 builder.RegisterType<WallFollowerFactory>().As<ISolverAlgorithmFactory>();
 builder.RegisterType<GenerateAndSolveMaze>().As<GenerateAndSolveMaze>();
 var container = builder.Build();
