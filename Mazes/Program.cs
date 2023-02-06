@@ -6,10 +6,10 @@ using MazeSolver;
 using Microsoft.Extensions.Configuration;
 using Random = MazeLibrary.Random;
 
-var configuration = new ConfigurationBuilder()
+var configuration = new MazeConfiguration();
+new ConfigurationBuilder()
     .AddJsonFile("config.json")
-    .Build()
-    .Get<MazeConfiguration>();
+    .Build().Bind(configuration);
 
 var builder = new ContainerBuilder();
 builder.RegisterType<Random>().As<IRandom>();
