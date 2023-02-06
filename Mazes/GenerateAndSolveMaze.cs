@@ -168,7 +168,14 @@ namespace Mazes
                     {
                         drawSelectRect(x, y, scalex, scaley);
                     }
-                    drawWalls(x, y, scalex, scaley, c);
+                    if (c.Walls.Any(w => w.Value == false))
+                    {
+                        drawWalls(x, y, scalex, scaley, c);
+                    }
+                    else
+                    {
+                        drawInnerRect(x, y, scalex, scaley);
+                    }
                 }
             }
         }
